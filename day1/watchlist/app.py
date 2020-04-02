@@ -2,12 +2,6 @@ from flask import Flask,url_for,render_template
 
 app = Flask(__name__)
 
-# @app.route('/')
-# @app.route('/index')
-# @app.route('/home')
-# def index():
-#     return "<h1>Hello Flask llaall </h1>"
-
 @app.route('/')
 def index():
    name = "Bruce"

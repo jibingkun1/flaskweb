@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ name }}'watchlist</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 </head>
 <body>
-    <h2>{{ name }}'watchlist</h2>
+    <h2>
+        <img src="{{ url_for('static',filename='images/avatar.jpg') }}" alt="头像" class="avatar">
+        {{ name }}'watchlist
+    </h2>
     {# 过滤器 #}
     <p>总共{{ movies|length }}个电影</p>
-    <ul>
+    <ul class="movie-list">
         {% for movie in movies%}
         <li>{{ movie.title }} - {{ movie.year }}</li>
         {% endfor %}
