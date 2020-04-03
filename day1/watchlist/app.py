@@ -29,8 +29,27 @@ class Movie(db.Model):
 # views 视图函数
 @app.route('/')
 def index():
-   name = "Bruce"
-   movies = [
+
+   user = User.query.first()  #查询出来用户记录
+   movies = Movie.query.all() 
+   return render_template('index.html',user=user,movies=movies)
+
+
+# 自定义命令
+# 建立空数据库
+@app.cli.command()  # 注册为命令
+@click.option('--drop',is_flag=True,help="先删除再创建")
+def initdb(drop):
+    if drop:
+        db.drop_all()
+    db.create_all()
+    click.echo("初始化数据库完成")
+
+# 向空数据库中插入数据
+@app.cli.command()
+def forge():
+    name = "Bruce"
+    movies = [
        {'title':"大赢家","year":"2020"},
        {'title':"囧妈","year":"2020"},
        {'title':"疯狂外星人","year":"2019"},
@@ -39,18 +58,14 @@ def index():
        {'title':"极限特工","year":"2010"},
        {'title':"叶问","year":"2014"},
        {'title':"杀破狼","year":"2000"},
-       {'title':"叶问2","year":"2016"},
-   ]
+       {'title':"叶问2","year":"2016"}
+    ]
+    user = User(name=name)
+    db.session.add(user)
+    for m in movies:
+        movie = Movie(title=m['title'],year=m['year'])
+        db.session.add(movie)
+    db.session.commit()
+    click.echo("导入数据完成")
 
-   return render_template('index.html',name=name,movies=movies)
-
-
-# 自定义命令
-@app.cli.command()  # 注册为命令
-@click.option('--drop',is_flag=True,help="先删除再创建")
-def initdb(drop):
-    if drop:
-        db.drop_all()
-    db.create_all()
-    click.echo("初始化数据库完成")
 
