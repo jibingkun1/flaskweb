@@ -69,3 +69,7 @@ def forge():
     click.echo("导入数据完成")
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    user = User.query.first()
+    return render_template('404.html',user=user)
